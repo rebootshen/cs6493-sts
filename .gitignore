@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 bak/
-data/
 model/
 logs/
 papers/
