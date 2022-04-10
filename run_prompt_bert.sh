@@ -54,7 +54,7 @@ case "$EXP" in
          --mask_embedding_sentence_template $TEMPLATE )
     ;;
 "bert-optiprompt")
-    BC=(python train.py)
+    BC=(python train_prompt_bert.py)
     GPU=$2
     BATCH=256
     LR=3e-5
@@ -71,7 +71,7 @@ case "$EXP" in
            --mask_embedding_sentence_template $TEMPLATE )
     ;;
 "unsup-roberta")
-    BC=(python train.py)
+    BC=(python train_prompt_bert.py)
     GPU=$3
     BATCH=256
     EPOCH=1
@@ -89,7 +89,7 @@ case "$EXP" in
            --mask_embedding_sentence_template $TEMPLATE )
     ;;
 "unsup-bert")
-    BC=(python train.py)
+    BC=(python train_prompt_bert.py)
     GPU=$3
     BATCH=256
     EPOCH=1
@@ -107,7 +107,7 @@ case "$EXP" in
            --mask_embedding_sentence_template $TEMPLATE )
     ;;
 "sup-roberta")
-    BC=(python -m torch.distributed.launch --nproc_per_node 4 train.py)
+    BC=(python -m torch.distributed.launch --nproc_per_node 4 train_prompt_bert.py)
     TRAIN_FILE=data/nli_for_simcse.csv
     BATCH=128
     EPOCH=3
@@ -123,7 +123,7 @@ case "$EXP" in
            --mask_embedding_sentence_template $TEMPLATE )
     ;;
 "sup-bert")
-    BC=(python -m torch.distributed.launch --nproc_per_node 4 train.py)
+    BC=(python -m torch.distributed.launch --nproc_per_node 4 train_prompt_bert.py)
     TRAIN_FILE=data/nli_for_simcse.csv
     BATCH=128
     EPOCH=3
@@ -200,14 +200,14 @@ EOF
 fi
 
 if [[ $CALC_ANISOTROPY == true ]]; then
-  CUDA_VISIBLE_DEVICES=$GPU python evaluation.py \
+  CUDA_VISIBLE_DEVICES=$GPU python evaluation_prompt_bert.py \
       --model_name_or_path $CHECKPOINT \
       --pooler avg\
       --mode test\
       --calc_anisotropy\
       ${eargs[@]}
 else
-  CUDA_VISIBLE_DEVICES=$GPU python evaluation.py \
+  CUDA_VISIBLE_DEVICES=$GPU python evaluation_prompt_bert.py \
     --model_name_or_path   $CHECKPOINT \
     --pooler avg\
     --mode test\
